@@ -31,6 +31,7 @@ Then I filtered for data from **2000 onward**.
 
 ## 3. Folder structure
 
+```
 DS1-mini-project/
 ├── data/
 │   ├── raw/                # original dataset (from Our World in Data)
@@ -42,7 +43,7 @@ DS1-mini-project/
 │   └── main.py             # runs the whole project in one go
 ├── requirements.txt
 └── README.md
-
+```
 
 ## 4. Requirements
 The project only needs a few basic packages:
