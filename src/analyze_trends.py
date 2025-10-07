@@ -1,7 +1,7 @@
 """
-Ploting renewable energy share over time for all EU countries, 2000 onward.
+Plotting renewable energy share over time for all EU countries (2000 onward)
+& descriptive statistics.
 """
-
 import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
@@ -15,17 +15,43 @@ out_file = project / "output" / "renewable_trends.png"
 df = pd.read_csv(clean_file)
 print("Loaded clean data:", df.shape)
 
-# types + filter: 2000 onward
+# adjusting types + filter (2000 onward)
 df["Year"] = pd.to_numeric(df["Year"], errors="coerce").astype("Int64")
 df["Renew_share"] = pd.to_numeric(df["Renew_share"], errors="coerce")
-df = df.dropna(subset=["Year", "Renew_share"])
-df = df[df["Year"] >= 2000]
+df = df.dropna(subset=["Year", "Renew_share"])df = df[df["Year"] >= 2000]
 
-# list all countries present 
+# --- Descriptive stat ---
+print("\nDescriptive statistics for Renew_share (from 2000 onward):")
+print(df["Renew_share"].describe())
+
+print("\nTop 5 countries by average renewable share:")
+avg_by_country = (
+    df.groupby("Entity")["Renew_share"]
+    .mean()
+    .sort_values(ascending=False)
+    .head(5)
+)
+print(avg_by_country)
+
+# saving the descriptive stats
+out_dir = project / "output"
+out_dir.mkdir(parents=True, exist_ok=True)
+
+# overall stats
+df["Renew_share"].describe().to_frame().to_csv(out_dir / "summary_overall.csv")
+# stats by country
+(
+    df.groupby("Entity")["Renew_share"]
+    .agg(["count", "mean", "std", "min", "max"])
+    .reset_index()
+    .to_csv(out_dir / "summary_by_country.csv", index=False)
+)
+print("\nDescriptive statistics saved in the output folder.")
+
+# --- Ploting ---
 countries = sorted(df["Entity"].unique().tolist())
-print(f"Plotting {len(countries)} countries from {df['Year'].min()} to {df['Year'].max()}.")
+print(f"\nPlotting {len(countries)} countries from {df['Year'].min()} to {df['Year'].max()}.")
 
-# plot
 plt.figure(figsize=(10, 6))
 
 for country in countries:
@@ -38,18 +64,17 @@ plt.ylabel("Share of Renewables (%)")
 plt.grid(True, alpha=0.25)
 plt.tight_layout()
 
-# place legend outside the chart
+# legend on the right
 plt.legend(
     title="Country",
-    bbox_to_anchor=(1.05, 1),   # move to the right of the plot
-    loc='upper left',
+    bbox_to_anchor=(1.05, 1),
+    loc="upper left",
     fontsize=8,
     ncol=1
 )
 
-# save and show
-out_file.parent.mkdir(parents=True, exist_ok=True)
+# save and show time :)
 plt.savefig(out_file, dpi=150, bbox_inches="tight")
 plt.show()
 
-print(f"Saved figure to: {out_file}")
+print(f"\nSaved figure to: {out_file}")
