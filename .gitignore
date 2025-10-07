@@ -1,4 +1,4 @@
-# macOS
+# macOS system files
 .DS_Store
 
 # Virtual environments
@@ -9,6 +9,13 @@
 __pycache__/
 *.pyc
 
-# Derived outputs (reproducible)
-data/processed/
-output/
+# ignoring everything in these folders
+data/processed/*
+output/*
+
+# but allow these files:
+!data/processed/renewables_clean.csv
+
+!output/renewable_trends.png
+!output/summary_overall.csv
+!output/summary_by_country.csv
