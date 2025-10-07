@@ -52,9 +52,10 @@ The project only needs a few basic packages:
 Install them using:
 ```bash
 pip install -r requirements.txt
+```
 
 ## 5. Reproducing the project
 Run the whole project in one click with:
-
 ```bash
 python src/main.py
+```
