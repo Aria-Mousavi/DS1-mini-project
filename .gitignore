@@ -9,13 +9,12 @@
 __pycache__/
 *.pyc
 
-# ignoring everything in these folders
+# Ignore everything in these folders
 data/processed/*
 output/*
 
-# but allow these files:
+# but allow these specific files:
 !data/processed/renewables_clean.csv
-
 !output/renewable_trends.png
 !output/summary_overall.csv
 !output/summary_by_country.csv
